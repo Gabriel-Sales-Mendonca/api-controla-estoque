@@ -92,66 +92,86 @@ class ProductsModel {
 
         this.valid()
 
-        let productName = await Products.find({name: {$regex: new RegExp(this.body.name, 'i')}}).exec()
-        
-        if(productName.length !== 0) {
-            this.errors.push('Produto já existe')
-        }
-        
-        if(this.errors.length != 0) return this.errors
-
         try {
+            let productName = await Products.find({name: {$regex: new RegExp(this.body.name, 'i')}}).exec()
+        
+            if(productName.length !== 0) {
+                this.errors.push('Produto já existe')
+            }
+            
+            if(this.errors.length != 0) return this.errors
+    
             const product = new Products({
                 name: this.body.name,
                 categoryId: this.body.categoryId,
                 price: this.body.price
             })
-
+    
             const { id, name, categoryId, price } = await product.save()
-
+    
             return { id, name, categoryId, price }
+
         } catch(e) {
-            console.log('Houve um erro')
-            console.log(e)
-        }        
+            return 'Houve um erro ' + e
+        }
     }
 
     static async index() {
-        const products = await Products.find({}, {_id: 0, __v: 0}).sort({ id: 1 })
-        return products
+        try {
+            const products = await Products.find({}, {_id: 0, __v: 0}).sort({ id: 1 })
+            return products
+
+        } catch(e) {
+            return 'Houve um erro ' + e
+        }
     }
 
     async show(productId) {
-        const products = await Products.find({ id: productId }, { _id: 0, __v: 0 }).sort({ id: 1 })
-        return products
+        try {
+            const products = await Products.find({ id: productId }, { _id: 0, __v: 0 }).sort({ id: 1 })
+            return products
+
+        } catch(e) {
+            return 'Houve um erro ' + e
+        }
     }
 
     async update() {
-        const productUpdated = await Products.findOneAndUpdate({ id: this.body.id }, this.body, { new: true, fields: { _id: 0, __v: 0 } })
+        try {
+            const productUpdated = await Products.findOneAndUpdate({ id: this.body.id }, this.body, { new: true, fields: { _id: 0, __v: 0 } })
+    
+            if(!productUpdated) {
+                this.errors.push('Produto não encontrado')
+            }
+    
+            this.valid()
+    
+            if(this.errors.length !== 0) return this.errors
+    
+            return productUpdated
 
-        if(!productUpdated) {
-            this.errors.push('Produto não encontrado')
+        } catch(e) {
+            return 'Houve um erro ' + e
         }
-
-        this.valid()
-
-        if(this.errors.length !== 0) return this.errors
-
-        return productUpdated
     }
 
     async delete() {
-        const product = await Products.findOne({ id: this.body.id })
-        console.log(product)
+        try {
+            const product = await Products.findOne({ id: this.body.id })
+            console.log(product)
+    
+            if(!product) {
+                this.errors.push('Produto não encontrado')
+                return this.errors
+            }
+    
+            await product.deleteOne()
+    
+            return 'Produto apagado com sucesso'
 
-        if(!product) {
-            this.errors.push('Produto não encontrado')
-            return this.errors
+        } catch(e) {
+            return 'Houve um erro ' + e
         }
-
-        await product.deleteOne()
-
-        return 'Produto apagado com sucesso'
     }
 }
 
