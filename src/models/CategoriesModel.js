@@ -107,7 +107,7 @@ class CategoriesModel {
         if(this.errors.length !== 0) return this.errors
 
         try {
-            const categoryVerify = await Categories.find({ name: this.body.name })
+            const categoryVerify = await Categories.find({ name: new RegExp(this.body.name, 'i') })
 
             if(categoryVerify.length > 0) {
                 this.errors.push('Categoria já cadastrada')
@@ -122,6 +122,23 @@ class CategoriesModel {
             }
 
             return categoryUpdated
+        } catch(e) {
+            return 'Houve um erro ' + e
+        }
+    }
+
+    async delete() {
+        try {
+            if(!this.body.id) {
+                this.errors.push('ID é obrigatório')
+                return this.errors
+            }
+
+            const category = await Categories.find({ id: this.body.id })
+
+            await Categories.deleteOne({ id: this.body.id })
+
+            return `Categoria ${category[0].name} apagada com sucesso`
         } catch(e) {
             return 'Houve um erro ' + e
         }

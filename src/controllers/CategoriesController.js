@@ -15,24 +15,23 @@ class CategoriesController {
     }
 
     async show(req, res) {
-        try {
-            const response = await CategoriesModel.show(req.params.id)
+        const response = await CategoriesModel.show(req.params.id)
 
-            return res.status(200).json(response)
-        } catch(e) {
-            return 'Houve um erro' + e
-        }
+        return res.status(200).json(response)
     }
 
     async update(req, res) {
-        try {
-            const categorie = new CategoriesModel(req.body)
-            const response = await categorie.update()
+        const categorie = new CategoriesModel(req.body)
+        const response = await categorie.update()
 
-            return res.status(200).json(response)
-        } catch(e) {
-            return 'Houve um erro' + e
-        }
+        return res.status(200).json(response)
+    }
+
+    async delete(req, res) {
+        const category = new CategoriesModel(req.body)
+        const response = await category.delete()
+
+        return res.status(200).json(response)
     }
 }
 
