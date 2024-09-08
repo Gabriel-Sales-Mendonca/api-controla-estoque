@@ -92,15 +92,16 @@ class ProductsModel {
 
         this.valid()
 
+        if(this.errors.length != 0) return this.errors
+
         try {
             let productName = await Products.find({name: {$regex: new RegExp(this.body.name, 'i')}}).exec()
         
             if(productName.length !== 0) {
                 this.errors.push('Produto já existe')
+                return this.errors
             }
-            
-            if(this.errors.length != 0) return this.errors
-    
+                
             const product = new Products({
                 name: this.body.name,
                 categoryId: this.body.categoryId,
@@ -126,9 +127,14 @@ class ProductsModel {
         }
     }
 
-    async show(productId) {
+    static async show(productId) {
         try {
             const products = await Products.find({ id: productId }, { _id: 0, __v: 0 }).sort({ id: 1 })
+
+            if(products.length == 0) {
+                return 'Produto não encontrado'
+            }
+
             return products
 
         } catch(e) {
@@ -138,13 +144,24 @@ class ProductsModel {
 
     async update() {
         try {
+            for(let key in this.body) {
+                if(!this.body[key]) {
+                    this.errors.push('Todos os campos devem estar preenchidos para a atualização')
+                    return this.errors
+                }
+            }
+
+            this.valid()
+
+            if(this.errors.length !== 0) {
+                return this.errors
+            }
+
             const productUpdated = await Products.findOneAndUpdate({ id: this.body.id }, this.body, { new: true, fields: { _id: 0, __v: 0 } })
     
             if(!productUpdated) {
                 this.errors.push('Produto não encontrado')
             }
-    
-            this.valid()
     
             if(this.errors.length !== 0) return this.errors
     

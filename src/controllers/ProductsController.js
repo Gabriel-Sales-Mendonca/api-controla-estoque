@@ -15,8 +15,7 @@ class ProductsController {
     }
 
     async show(req, res) {
-        const products = new ProductsModel()
-        const response = await products.show(req.params.id)
+        const response = await ProductsModel.show(req.params.id)
 
         return res.json(response)
     }
