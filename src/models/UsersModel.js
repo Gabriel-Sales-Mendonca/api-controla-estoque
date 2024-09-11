@@ -78,7 +78,7 @@ class UsersModel {
 
             const emailExists = await User.find({ email: this.body.email })
 
-            if(emailExists) {
+            if(emailExists.length > 0) {
                 this.errors.push('EMAIL já cadastrado')
                 return this.errors
             }
