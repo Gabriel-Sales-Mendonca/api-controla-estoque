@@ -8,7 +8,7 @@ const route = new Router()
 route.post('/', loginRequired, categoriesController.create)
 route.get('/', categoriesController.index)
 route.get('/:id', categoriesController.show)
-route.put('/', categoriesController.update)
-route.delete('/', categoriesController.delete)
+route.put('/', loginRequired, categoriesController.update)
+route.delete('/', loginRequired, categoriesController.delete)
 
 module.exports = route
