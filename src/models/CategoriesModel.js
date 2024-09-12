@@ -77,9 +77,9 @@ class CategoriesModel {
         }
     }
 
-    static async index() {
+    static async index(userId) {
         try {
-            const categories = await Categories.find({}, {_id: 0, __v: 0}).sort({ id: 1 })
+            const categories = await Categories.find({userId: userId}, {_id: 0, __v: 0}).sort({ id: 1 })
 
             return categories
         } catch(e) {

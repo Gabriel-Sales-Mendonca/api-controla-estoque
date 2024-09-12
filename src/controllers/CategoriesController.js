@@ -9,7 +9,7 @@ class CategoriesController {
     }
 
     async index(req, res) {
-        const response = await CategoriesModel.index()
+        const response = await CategoriesModel.index(req.body.userId)
 
         return res.json(response)
     }
