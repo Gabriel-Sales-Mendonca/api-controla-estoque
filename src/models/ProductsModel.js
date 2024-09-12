@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 
-const Counter = require('./CounterModel')
 const { User } = require('./UsersModel')
 
 const productsSchema = new mongoose.Schema({
@@ -16,8 +15,7 @@ const productsSchema = new mongoose.Schema({
 
     name: {
         type: String,
-        required: 'O nome é obrigatório',
-        unique: true
+        required: 'O nome é obrigatório'
     },
 
     categoryId: {
@@ -89,7 +87,7 @@ class ProductsModel {
         if(this.errors.length != 0) return this.errors
 
         try {
-            let productName = await Products.find({name: {$regex: new RegExp(this.body.name, 'i')}}).exec()
+            let productName = await Products.find({name: {$regex: new RegExp(this.body.name, 'i')}, userId: this.body.userId}).exec()
         
             if(productName.length !== 0) {
                 this.errors.push('Produto já existe')

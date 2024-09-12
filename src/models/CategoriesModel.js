@@ -59,7 +59,7 @@ class CategoriesModel {
 
         try {
             const categoryVerify = await Categories.find({
-                $or: [{ id: this.body.id }, { name: this.body.name }]
+                $or: [{ id: this.body.id }, {name: {$regex: new RegExp(this.body.name, 'i')}}]
             })
     
             if(categoryVerify.length > 0) {
