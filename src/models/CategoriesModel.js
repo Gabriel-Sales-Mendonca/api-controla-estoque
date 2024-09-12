@@ -87,9 +87,9 @@ class CategoriesModel {
         }         
     }
 
-    static async show(categoryId) {
+    static async show(userId, categoryId) {
         try {
-            const category = await Categories.find({ id: categoryId }, { _id: 0, __v: 0 })
+            const category = await Categories.find({ userId: userId, id: categoryId }, { _id: 0, __v: 0 })
 
             if(category.length == 0) {
                 return 'Categoria não encontrada'

@@ -15,7 +15,7 @@ class CategoriesController {
     }
 
     async show(req, res) {
-        const response = await CategoriesModel.show(req.params.id)
+        const response = await CategoriesModel.show(req.body.userId, req.params.id)
 
         return res.status(200).json(response)
     }
