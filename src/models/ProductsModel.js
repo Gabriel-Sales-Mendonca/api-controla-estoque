@@ -2,6 +2,11 @@ const mongoose = require('mongoose')
 const Counter = require('./CounterModel')
 
 const productsSchema = new mongoose.Schema({
+    userId: {
+        type: Number,
+        required: 'USERID não informado'
+    },
+
     id: {
         type: Number,
         required: 'ID não informado',
@@ -103,6 +108,7 @@ class ProductsModel {
             }
                 
             const product = new Products({
+                userId: this.body.userId,
                 name: this.body.name,
                 categoryId: this.body.categoryId,
                 price: this.body.price
@@ -117,9 +123,9 @@ class ProductsModel {
         }
     }
 
-    static async index() {
+    static async index(userId) {
         try {
-            const products = await Products.find({}, {_id: 0, __v: 0}).sort({ id: 1 })
+            const products = await Products.find({userId}, {_id: 0, __v: 0}).sort({ id: 1 })
             return products
 
         } catch(e) {
@@ -127,9 +133,9 @@ class ProductsModel {
         }
     }
 
-    static async show(productId) {
+    static async show(userId, productId) {
         try {
-            const products = await Products.find({ id: productId }, { _id: 0, __v: 0 }).sort({ id: 1 })
+            const products = await Products.find({ userId: userId, id: productId }, { _id: 0, __v: 0 }).sort({ id: 1 })
 
             if(products.length == 0) {
                 return 'Produto não encontrado'

@@ -9,13 +9,13 @@ class ProductsController {
     }
 
     async index(req, res) {
-        const products = await ProductsModel.index()
+        const products = await ProductsModel.index(req.body.userId)
 
         return res.json(products)
     }
 
     async show(req, res) {
-        const response = await ProductsModel.show(req.params.id)
+        const response = await ProductsModel.show(req.body.userId, req.params.id)
 
         return res.json(response)
     }
