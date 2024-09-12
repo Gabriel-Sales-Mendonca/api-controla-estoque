@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
-const UsersModel = require('../models/UsersModel')
+const { UsersModel } = require('../models/UsersModel')
 
 class TokensController {
     async create(req, res) {

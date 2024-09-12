@@ -25,6 +25,11 @@ const usersSchema = new mongoose.Schema({
     password_hash: {
         type: String,
         required: 'SENHA não salva'
+    },
+
+    counterProduct: {
+        type: Number,
+        default: 0
     }
 })
 
@@ -109,4 +114,4 @@ class UsersModel {
     }
 }
 
-module.exports = UsersModel
+module.exports = { UsersModel, User }

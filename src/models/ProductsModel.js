@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
+
 const Counter = require('./CounterModel')
+const { User } = require('./UsersModel')
 
 const productsSchema = new mongoose.Schema({
     userId: {
@@ -9,8 +11,7 @@ const productsSchema = new mongoose.Schema({
 
     id: {
         type: Number,
-        required: 'ID não informado',
-        unique: true
+        required: 'ID não informado'
     },
 
     name: {
@@ -30,18 +31,6 @@ const productsSchema = new mongoose.Schema({
         default: 0
     }
 })
-
-productsSchema.pre('validate', async function(next) {
-    if (this.isNew) {
-      const counter = await Counter.findByIdAndUpdate(
-        { _id: 'productId' },
-        { $inc: { seq: 1 } },
-        { new: true, upsert: true }
-      );
-      this.id = counter.seq;
-    }
-    next();
-});
 
 const Products = mongoose.model('Products', productsSchema)
 
@@ -106,9 +95,12 @@ class ProductsModel {
                 this.errors.push('Produto já existe')
                 return this.errors
             }
+
+            const userUpdated = await User.findOneAndUpdate({ id: this.body.userId }, { $inc: { counterProduct: 1 } }, { new: true })
                 
             const product = new Products({
                 userId: this.body.userId,
+                id: userUpdated.counterProduct,
                 name: this.body.name,
                 categoryId: this.body.categoryId,
                 price: this.body.price
