@@ -6,8 +6,8 @@ const categoriesController = require('../controllers/CategoriesController')
 const route = new Router()
 
 route.post('/', loginRequired, categoriesController.create)
-route.get('/', categoriesController.index)
-route.get('/:id', categoriesController.show)
+route.get('/', loginRequired, categoriesController.index)
+route.get('/:id', loginRequired, categoriesController.show)
 route.put('/', loginRequired, categoriesController.update)
 route.delete('/', loginRequired, categoriesController.delete)
 
