@@ -16,8 +16,7 @@ function loginRequired (req, res, next) {
 
         const { id, email } = decoded
 
-        req.userId = id
-        req.userEmail = email
+        req.body.userId = id
 
         next()
     } catch(e) {

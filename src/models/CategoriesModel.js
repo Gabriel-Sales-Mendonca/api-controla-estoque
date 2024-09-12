@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
 
 const categoriesSchema = new mongoose.Schema({
+    userId: {
+        type: Number,
+        required: 'USERID não informado'
+    },
+
     id: {
         type: Number,
         required: 'ID não informado',
