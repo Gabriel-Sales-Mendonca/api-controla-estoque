@@ -118,31 +118,6 @@ class ProductsModel {
         }
     }
 
-    static async index(userId) {
-        try {
-            const products = await Products.find({userId}, {_id: 0, __v: 0}).sort({ id: 1 })
-            return products
-
-        } catch(e) {
-            return 'Houve um erro ' + e
-        }
-    }
-
-    static async show(userId, productId) {
-        try {
-            const products = await Products.find({ userId: userId, id: productId }, { _id: 0, __v: 0 }).sort({ id: 1 })
-
-            if(products.length == 0) {
-                return 'Produto não encontrado'
-            }
-
-            return products
-
-        } catch(e) {
-            return 'Houve um erro ' + e
-        }
-    }
-
     async update() {
         try {
             for(let key in this.body) {
@@ -184,6 +159,31 @@ class ProductsModel {
             await product.deleteOne()
     
             return `Produto ${product.name} apagado com sucesso`
+
+        } catch(e) {
+            return 'Houve um erro ' + e
+        }
+    }
+
+    static async index(userId) {
+        try {
+            const products = await Products.find({userId}, {_id: 0, __v: 0}).sort({ id: 1 })
+            return products
+
+        } catch(e) {
+            return 'Houve um erro ' + e
+        }
+    }
+
+    static async show(userId, productId) {
+        try {
+            const products = await Products.find({ userId: userId, id: productId }, { _id: 0, __v: 0 }).sort({ id: 1 })
+
+            if(products.length == 0) {
+                return 'Produto não encontrado'
+            }
+
+            return products
 
         } catch(e) {
             return 'Houve um erro ' + e
