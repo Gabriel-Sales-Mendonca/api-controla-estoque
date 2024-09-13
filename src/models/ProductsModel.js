@@ -172,8 +172,7 @@ class ProductsModel {
 
     async delete() {
         try {
-            const product = await Products.findOne({ id: this.body.id })
-            console.log(product)
+            const product = await Products.findOne({ userId: this.body.userId, id: this.body.id })
     
             if(!product) {
                 this.errors.push('Produto não encontrado')
