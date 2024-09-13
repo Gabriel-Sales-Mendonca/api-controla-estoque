@@ -39,7 +39,7 @@ class ProductsModel {
         this.errors = []
     }
 
-    valid() {
+    async valid() {
         if(this.body.name) {
             if(typeof(this.body.name) !== 'string') {
                 this.body.name = String(this.body.name).trim()
@@ -72,6 +72,10 @@ class ProductsModel {
             }
         }
 
+        const categoryExists = await Categories.findOne({ userId: this.body.userId, id: this.body.categoryId })
+
+        if(!categoryExists) return 'Categoria não existe'
+
         return true
     }
 
@@ -94,10 +98,6 @@ class ProductsModel {
                 this.errors.push('Produto já existe')
                 return this.errors
             }
-
-            const categoryExists = await Categories.findOne({ userId: this.body.userId, id: this.body.categoryId })
-
-            if(!categoryExists) return 'Categoria não existe'
 
             const userUpdated = await User.findOneAndUpdate({ id: this.body.userId }, { $inc: { counterProduct: 1 } }, { new: true })
                 
