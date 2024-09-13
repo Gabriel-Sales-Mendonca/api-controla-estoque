@@ -174,14 +174,11 @@ class ProductsModel {
         try {
             const product = await Products.findOne({ userId: this.body.userId, id: this.body.id })
     
-            if(!product) {
-                this.errors.push('Produto não encontrado')
-                return this.errors
-            }
+            if(!product) return 'Produto não encontrado'
     
             await product.deleteOne()
     
-            return 'Produto apagado com sucesso'
+            return `Produto ${product.name} apagado com sucesso`
 
         } catch(e) {
             return 'Houve um erro ' + e

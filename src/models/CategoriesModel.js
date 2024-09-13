@@ -110,14 +110,14 @@ class CategoriesModel {
         if(this.errors.length !== 0) return this.errors
 
         try {
-            const categoryVerify = await Categories.find({ name: new RegExp(this.body.name, 'i') })
+            const categoryVerify = await Categories.find({userId: this.body.userId, name: new RegExp(this.body.name, 'i') })
 
             if(categoryVerify.length > 0) {
                 this.errors.push('Categoria já cadastrada')
                 return this.errors
             }
 
-            const categoryUpdated = await Categories.findOneAndUpdate({ id: this.body.id }, this.body, { new: true, fields: { _id: 0, __v: 0 } })
+            const categoryUpdated = await Categories.findOneAndUpdate({ userId: this.body.userId, id: this.body.id }, this.body, { new: true, fields: { _id: 0, __v: 0 } })
 
             if(!categoryUpdated) {
                 this.errors.push('Categoria não encontrada')
@@ -125,6 +125,7 @@ class CategoriesModel {
             }
 
             return categoryUpdated
+            
         } catch(e) {
             return 'Houve um erro ' + e
         }
@@ -132,16 +133,14 @@ class CategoriesModel {
 
     async delete() {
         try {
-            if(!this.body.id) {
-                this.errors.push('ID é obrigatório')
-                return this.errors
-            }
+            const category = await Categories.findOne({ userId: this.body.userId, id: this.body.id })
 
-            const category = await Categories.find({ id: this.body.id })
+            if(!category) return 'Categoria não encontrada'
 
-            await Categories.deleteOne({ id: this.body.id })
+            await category.deleteOne()
 
-            return `Categoria ${category[0].name} apagada com sucesso`
+            return `Categoria ${category.name} apagada com sucesso`
+            
         } catch(e) {
             return 'Houve um erro ' + e
         }
