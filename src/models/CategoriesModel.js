@@ -8,14 +8,12 @@ const categoriesSchema = new mongoose.Schema({
 
     id: {
         type: Number,
-        required: 'ID não informado',
-        unique: true
+        required: 'ID não informado'
     },
 
     name: {
         type: String,
-        required: 'O nome é obrigatório',
-        unique: true
+        required: 'O nome é obrigatório'
     }
 })
 
@@ -59,7 +57,7 @@ class CategoriesModel {
 
         try {
             const categoryVerify = await Categories.find({
-                $or: [{ id: this.body.id }, {name: {$regex: new RegExp(this.body.name, 'i')}}]
+                $or: [{ userId: this.body.userId, id: this.body.id }, { userId: this.body.userId, name: {$regex: new RegExp(this.body.name, 'i')} }]
             })
     
             if(categoryVerify.length > 0) {
