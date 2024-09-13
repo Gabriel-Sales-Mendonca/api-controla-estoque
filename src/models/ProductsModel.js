@@ -89,7 +89,7 @@ class ProductsModel {
         try {
             let productName = await Products.find({name: {$regex: new RegExp(this.body.name, 'i')}, userId: this.body.userId}).exec()
         
-            if(productName.length !== 0) {
+            if(productName.length > 0) {
                 this.errors.push('Produto já existe')
                 return this.errors
             }
@@ -149,17 +149,19 @@ class ProductsModel {
 
             this.valid()
 
-            if(this.errors.length !== 0) {
-                return this.errors
+            if(this.errors.length !== 0) return this.errors
+
+            const nameExists = await Products.find({name: {$regex: new RegExp(this.body.name, 'i')}})
+
+            if(nameExists.length > 0) {
+                if(nameExists[0].id !== this.body.id) {
+                    return 'Esse nome já está cadastrado em outro produto'
+                }
             }
 
-            const productUpdated = await Products.findOneAndUpdate({ id: this.body.id }, this.body, { new: true, fields: { _id: 0, __v: 0 } })
+            const productUpdated = await Products.findOneAndUpdate({ userId: this.body.userId, id: this.body.id }, this.body, { new: true, fields: { _id: 0, __v: 0 } })
     
-            if(!productUpdated) {
-                this.errors.push('Produto não encontrado')
-            }
-    
-            if(this.errors.length !== 0) return this.errors
+            if(!productUpdated) return 'Produto não encontrado'
     
             return productUpdated
 
