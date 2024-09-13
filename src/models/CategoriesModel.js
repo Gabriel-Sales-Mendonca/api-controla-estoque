@@ -147,4 +147,4 @@ class CategoriesModel {
     }
 }
 
-module.exports = CategoriesModel
+module.exports = {CategoriesModel, Categories}

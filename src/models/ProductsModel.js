@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const { User } = require('./UsersModel')
+const { Categories } = require('./CategoriesModel')
 
 const productsSchema = new mongoose.Schema({
     userId: {
@@ -93,6 +94,10 @@ class ProductsModel {
                 this.errors.push('Produto já existe')
                 return this.errors
             }
+
+            const categoryExists = await Categories.findOne({ userId: this.body.userId, id: this.body.categoryId })
+
+            if(!categoryExists) return 'Categoria não existe'
 
             const userUpdated = await User.findOneAndUpdate({ id: this.body.userId }, { $inc: { counterProduct: 1 } }, { new: true })
                 
