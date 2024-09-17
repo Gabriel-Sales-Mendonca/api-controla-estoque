@@ -191,4 +191,4 @@ class ProductsModel {
     }
 }
 
-module.exports = ProductsModel
+module.exports = {ProductsModel, Products}

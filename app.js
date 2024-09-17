@@ -8,6 +8,7 @@ const categoriesRoutes = require('./src/routes/categoriesRoutes')
 const usersRoutes = require('./src/routes/usersRoutes')
 const tokensRoutes = require('./src/routes/tokensRoutes')
 const experimentalRoutes = require('./src/routes/experimentalRoutes')
+const stocksRoutes = require('./src/routes/stocksRoutes')
 
 async function main() {
     try {
@@ -37,7 +38,7 @@ class App {
         this.app.use('/experimental', experimentalRoutes)
         this.app.use('/categories', categoriesRoutes)
         this.app.use('/products', productsRoutes)
-        //this.app.use('/stock')
+        this.app.use('/stocks', stocksRoutes)
     }
 }
 
