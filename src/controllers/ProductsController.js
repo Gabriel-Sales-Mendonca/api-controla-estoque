@@ -33,6 +33,13 @@ class ProductsController {
 
         return res.json(response)
     }
+
+    async updateAmount(req, res) {
+        const product = new ProductsModel(req.body)
+        const response = await product.updateAmount()
+
+        return res.json(response)
+    }
 }
 
 module.exports = new ProductsController()

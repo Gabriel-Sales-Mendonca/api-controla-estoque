@@ -28,6 +28,19 @@ const productsSchema = new mongoose.Schema({
     price: {
         type: Number,
         default: 0
+    },
+
+    totalValue: {
+        type: Number
+    },
+
+    amount: {
+        type: Number,
+        dafault: 0
+    },
+
+    amountUpdatedAt: {
+        type: Date
     }
 })
 
@@ -145,6 +158,24 @@ class ProductsModel {
     
             return productUpdated
 
+        } catch(e) {
+            return 'Houve um erro ' + e
+        }
+    }
+
+    async updateAmount() {
+        try {
+            const product = await Products.findOne({ userId: this.body.userId, id: this.body.id })
+
+            if(!product) return 'Produto não encontrado'
+
+            console.log(product.amount)
+
+            const updatedProduct = await product.updateOne({ amount: this.body.amount })
+
+            console.log(updatedProduct)
+
+            return 'coming soon'
         } catch(e) {
             return 'Houve um erro ' + e
         }

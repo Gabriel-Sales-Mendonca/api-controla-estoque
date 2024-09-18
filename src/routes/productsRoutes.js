@@ -9,6 +9,7 @@ route.post('/', loginRequired, productsController.create)
 route.get('/', loginRequired, productsController.index)
 route.get('/:id', loginRequired, productsController.show)
 route.put('/', loginRequired, productsController.update)
+route.put('/amount/', loginRequired, productsController.updateAmount)
 route.delete('/', loginRequired, productsController.delete)
 
 module.exports = route
