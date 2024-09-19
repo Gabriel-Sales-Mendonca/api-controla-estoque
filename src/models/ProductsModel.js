@@ -36,7 +36,7 @@ const productsSchema = new mongoose.Schema({
 
     amount: {
         type: Number,
-        dafault: 0
+        default: 0
     },
 
     amountUpdatedAt: {
@@ -90,6 +90,16 @@ class ProductsModel {
         if(!categoryExists) return 'Categoria não existe'
 
         return true
+    }
+
+    updateDate() {
+        const utcTime = new Date().getTime()
+
+        const offset = -3 * 60 * 60 * 1000
+
+        const localTime = new Date(utcTime + offset)
+
+        return localTime
     }
 
     async create() {
@@ -152,11 +162,11 @@ class ProductsModel {
                 }
             }
 
-            const productUpdated = await Products.findOneAndUpdate({ userId: this.body.userId, id: this.body.id }, this.body, { new: true, fields: { _id: 0, __v: 0 } })
+            const updatedProduct = await Products.findOneAndUpdate({ userId: this.body.userId, id: this.body.id }, this.body, { new: true, fields: { _id: 0, __v: 0 } })
     
-            if(!productUpdated) return 'Produto não encontrado'
+            if(!updatedProduct) return 'Produto não encontrado'
     
-            return productUpdated
+            return updatedProduct
 
         } catch(e) {
             return 'Houve um erro ' + e
@@ -165,17 +175,13 @@ class ProductsModel {
 
     async updateAmount() {
         try {
-            const product = await Products.findOne({ userId: this.body.userId, id: this.body.id })
+            const localTime = this.updateDate()
+            
+            const updatedProduct = await Products.findOneAndUpdate({ userId: this.body.userId, id: this.body.id }, { amount: this.body.amount, amountUpdatedAt: localTime }, { new: true, fields: { _id: 0, __v: 0 } })
 
-            if(!product) return 'Produto não encontrado'
+            if(!updatedProduct) return 'Produto não encontrado'
 
-            console.log(product.amount)
-
-            const updatedProduct = await product.updateOne({ amount: this.body.amount })
-
-            console.log(updatedProduct)
-
-            return 'coming soon'
+            return updatedProduct
         } catch(e) {
             return 'Houve um erro ' + e
         }
