@@ -5,6 +5,12 @@ class UsersController {
         const user = new UsersModel(req.body)
         const response = await user.create()
 
+        if(response.constructor == Array) {
+            return res.json({
+                errors: response
+            })
+        }
+
         return res.json(response)
     }
 }
