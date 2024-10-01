@@ -12,11 +12,15 @@ class TokensController {
 
         const user = await UsersModel.findByEmail(req.body.email)
 
-        if(!user) return res.json('Usuário não encontrado')
+        if(!user) return res.status(401).json({
+            error: 'Usuário não encontrado'
+        })
 
         const passwordIsValid = await bcrypt.compare(req.body.password, user.password_hash)
 
-        if(!passwordIsValid) return res.status(401).json('Senha incorreta')
+        if(!passwordIsValid) return res.status(401).json({
+            error: 'Senha incorreta'
+        })
 
         const token = jwt.sign({ id: user.id, email: user.email }, process.env.PRIVATEKEY, {expiresIn: 60 * 60 * 24 * 7})
 
