@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const helmet = require('helmet')
 
 const homeRoutes = require('./src/routes/homeRoutes')
 const productsRoutes = require('./src/routes/productsRoutes')
@@ -28,6 +29,7 @@ class App {
     }
 
     middlewares() {
+        this.app.use(helmet())
         this.app.use(cors())
         this.app.use(express.urlencoded({ extended: true }))
         this.app.use(express.json())
