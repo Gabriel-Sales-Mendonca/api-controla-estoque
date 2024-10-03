@@ -7,7 +7,7 @@ class CategoriesController {
 
         if(response.constructor == Array) {
             return res.status(401).json({
-                error: 'teste'
+                error: response
             })
         }
 
