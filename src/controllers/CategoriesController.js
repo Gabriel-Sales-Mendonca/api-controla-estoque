@@ -5,6 +5,12 @@ class CategoriesController {
         const category = new CategoriesModel(req.body)
         const response = await category.create()
 
+        if(response.constructor == Array) {
+            return res.json({
+                errors: response
+            })
+        }
+
         return res.json(response)
     }
 
