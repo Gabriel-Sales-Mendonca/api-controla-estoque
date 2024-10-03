@@ -6,7 +6,7 @@ class CategoriesController {
         const response = await category.create()
 
         if(response.constructor == Array) {
-            return res.json({
+            return res.status(401).json({
                 errors: response
             })
         }
