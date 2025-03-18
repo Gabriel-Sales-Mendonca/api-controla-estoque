@@ -1,9 +1,9 @@
 # 📦 API Controla Estoque
-# Sobre o projeto
+# 🔍 Sobre o projeto
 
 [https://controlaestoque.netlify.app/](https://controlaestoque.netlify.app/)
 
-Acesse também o repositório do front-end desse projeto em: https://github.com/Gabriel-Sales-Mendonca/controlaestoque
+**Acesse repositório do Frontend em:** https://github.com/Gabriel-Sales-Mendonca/controlaestoque
 
 É uma API feita com **Node JS**, que possui:
 - Sistema de login com **JWT**
@@ -33,8 +33,9 @@ Permite um usuário controlar um estoque, gerenciando **PRODUTOS**, **CATEGORIAS
 - Validação de dados
 
 # Implantação em produção
-- Backend: Vercel
-- Banco de dados: MongoDB Atlas
+- **Backend**: Vercel
+- **Frontend**: Deploy na Netlify
+- **Banco de dados**: MongoDB Atlas
 
 # Como executar o projeto
 
